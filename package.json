@@ -1,0 +1,97 @@
+{
+  "name": "systemverilog-utils",
+  "displayName": "SystemVerilog Utils",
+  "description": "Generate named SystemVerilog module instantiations from selected module declarations.",
+  "version": "0.1.0",
+  "publisher": "kajon",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hea-john-09/systemverilog-utils.git"
+  },
+  "homepage": "https://github.com/Hea-john-09/systemverilog-utils#readme",
+  "bugs": {
+    "url": "https://github.com/Hea-john-09/systemverilog-utils/issues"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "systemverilog",
+    "verilog",
+    "rtl",
+    "fpga",
+    "instantiation"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "systemverilog-utils.replaceWithInstantiation",
+        "title": "Replace Selection with Module Instantiation",
+        "category": "SystemVerilog Utils",
+        "icon": "$(symbol-constructor)"
+      },
+      {
+        "command": "systemverilog-utils.copyInstantiation",
+        "title": "Copy Module Instantiation",
+        "category": "SystemVerilog Utils",
+        "icon": "$(copy)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "systemverilog-utils.replaceWithInstantiation",
+          "when": "editorHasSelection && (editorLangId == systemverilog || editorLangId == verilog)",
+          "group": "1_modification@20"
+        },
+        {
+          "command": "systemverilog-utils.copyInstantiation",
+          "when": "editorHasSelection && (editorLangId == systemverilog || editorLangId == verilog)",
+          "group": "9_cutcopypaste@20"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "SystemVerilog Utils",
+      "properties": {
+        "systemverilogUtils.instancePrefix": {
+          "type": "string",
+          "default": "u_",
+          "description": "Prefix used for generated instance names."
+        },
+        "systemverilogUtils.alignConnections": {
+          "type": "boolean",
+          "default": true,
+          "description": "Align generated named parameter and port connections."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run check",
+    "clean": "node -e \"require('node:fs').rmSync('out',{recursive:true,force:true})\"",
+    "compile": "npm run clean && tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "check": "npm run compile && npm run test:unit",
+    "test": "npm run check",
+    "test:unit": "node --test out/test/unit/parser.test.js",
+    "test:integration": "npm run compile && node ./out/test/runTest.js",
+    "package:vsix": "vsce package",
+    "publish:marketplace": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.9.2",
+    "typescript": "^5.9.2"
+  }
+}
